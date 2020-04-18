@@ -6,19 +6,20 @@
       "cppStandard": "c++17",
       "includePath": [
         "${config:LinuxRootDir}/home/evler/esp/esp-idf/components/**",
-        "${config:LinuxRootDir}/home/evler/esp/esp-idf/components/freertos/include/",
+        "${config:LinuxRootDir}/home/evler/esp/esp-idf/components/freertos/include",
         "${config:LinuxRootDir}/home/evler/esp/xtensa-esp32-elf/xtensa-esp32-elf/include",
-        "${config:LinuxRootDir}/home/evler/esp/esp-idf/components/esp_wifi/include/**",
-        "${config:LinuxRootDir}/home/evler/esp/esp-idf/components/log/include/**",
-        "${config:LinuxRootDir}/home/evler/esp/esp-idf/components/esp_event/include/**",
-        "${config:LinuxRootDir}/home/evler/esp/esp-idf/components/nvs_flash/include/**",
-        "${workspaceFolder}/**",
-        "${workspaceFolder}/main/st7789v/"
+        "${config:LinuxRootDir}/home/evler/esp/esp-idf/components/esp_wifi/include",
+        "${config:LinuxRootDir}/home/evler/esp/esp-idf/components/log/include",
+        "${config:LinuxRootDir}/home/evler/esp/esp-idf/components/esp_event/include",
+        "${config:LinuxRootDir}/home/evler/esp/esp-idf/components/nvs_flash/include",
+        
+        "${config:LinuxRootDir}/home/evler/esp/esp-idf/components/esp_netif/include",
+        
+        "${workspaceFolder}",
+        "${workspaceFolder}/main/st7789v"
       ],
       "browse": {
         "path": [
-          "${config:LinuxRootDir}/home/evler/esp/esp-idf/components",
-          "${config:idf.espIdfPathWin}/components",
           "${workspaceFolder}"
         ],
         "limitSymbolsToIncludedHeaders": false

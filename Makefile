@@ -3,7 +3,7 @@
 # project subdirectory.
 #
 
-PROJECT_NAME := demo_esp_lcd_st7789v
+PROJECT_NAME := demo_esp_wifi_scan
 
 include $(IDF_PATH)/make/project.mk
 

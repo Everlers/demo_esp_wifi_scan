@@ -6,7 +6,7 @@
 #include "string.h"
 
 static spi_device_handle_t stspi;
-DMA_ATTR static const lcd_init_cmd_t st_init_cmds[];
+static const lcd_init_cmd_t st_init_cmds[];
 static const uint8_t font6_8[][6];
 
 static void st7789v_write_cmd(uint8_t cmd);
@@ -200,7 +200,7 @@ static void st7789v_write_data(uint8_t *data,uint32_t len)
 
 //将数据放入DRAM中，默认情况下，常量数据放入DROM中，这是DMA无法访问的。
 //Place data into DRAM. Constant data gets placed into DROM by default, which is not accessible by DMA.
-DRAM_ATTR static const lcd_init_cmd_t st_init_cmds[]={
+static const lcd_init_cmd_t st_init_cmds[]={
     /* Memory Data Access Control, MX=MV=1, MY=ML=MH=0, RGB=0 */
     {0x36, {(1<<5)|(1<<6)|(0<<3)}, 1},
     /* Interface Pixel Format, 16bits/pixel for RGB/MCU interface */
