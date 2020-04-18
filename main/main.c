@@ -13,7 +13,7 @@
 #include "./st7789v/st7789v.h"
 #include "string.h"
 
-#define DEFAULT_SCAN_LIST_SIZE      20//最大的扫描数量
+#define DEFAULT_SCAN_LIST_SIZE      19//最大的扫描数量
 
 static const char *TAG = "scan";
 
@@ -102,7 +102,7 @@ void wifi_scan(void)
     esp_netif_t *sta_netif = esp_netif_create_default_wifi_sta();//创建默认的wifista。 如果有任何init错误，此API将中止。
     assert(sta_netif);
 
-    wifi_init_config_t cfg;// = WIFI_INIT_CONFIG_DEFAULT();//初始化默认的WiFi配置
+    wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();//初始化默认的WiFi配置
     ESP_ERROR_CHECK(esp_wifi_init(&cfg));//配置WiFi
 
     uint16_t number = DEFAULT_SCAN_LIST_SIZE;
@@ -116,6 +116,11 @@ void wifi_scan(void)
     ESP_ERROR_CHECK(esp_wifi_scan_get_ap_records(&number, ap_info));
     ESP_ERROR_CHECK(esp_wifi_scan_get_ap_num(&ap_count));
     ESP_LOGI(TAG, "Total APs scanned = %u", ap_count);
+
+    char *string = heap_caps_malloc(256,MALLOC_CAP_DMA);
+    sprintf(string,"SSID               RSSI  CHANNEL");
+    lcd_show_string(0,0,string,COLOR_RED,COLOR_BLACK);
+    
     for (int i = 0; (i < DEFAULT_SCAN_LIST_SIZE) && (i < ap_count); i++) {
         ESP_LOGI(TAG, "SSID \t\t%s", ap_info[i].ssid);
         ESP_LOGI(TAG, "RSSI \t\t%d", ap_info[i].rssi);
@@ -124,7 +129,12 @@ void wifi_scan(void)
             print_cipher_type(ap_info[i].pairwise_cipher, ap_info[i].group_cipher);
         }
         ESP_LOGI(TAG, "Channel \t\t%d\n", ap_info[i].primary);
+        
+        sprintf(string,"%d     %d",ap_info[i].rssi,ap_info[i].primary);
+        lcd_show_string(0,(i+1)*8,(char *)ap_info[i].ssid,COLOR_WHITE,COLOR_BLACK);
+        lcd_show_string(120,(i+1)*8,string,COLOR_WHITE,COLOR_BLACK);
     }
+    heap_caps_free(string);
 }
 
 void app_main(void)
@@ -138,9 +148,6 @@ void app_main(void)
     ESP_ERROR_CHECK(ret);
 
     lcd_init();
-    lcd_show_string(0,0,"ESP32",WHITE,BLACK);
-    lcd_show_string(0,8,"wifi scan..",WHITE,BLACK);
-
     wifi_scan();
     while (1)
     {
