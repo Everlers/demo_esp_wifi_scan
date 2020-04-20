@@ -13,7 +13,7 @@
 #include "./st7789v/st7789v.h"
 #include "string.h"
 
-#define DEFAULT_SCAN_LIST_SIZE      19//最大的扫描数量
+#define DEFAULT_SCAN_LIST_SIZE      18//最大的扫描数量
 
 static const char *TAG = "scan";
 
@@ -105,16 +105,16 @@ void wifi_scan(void)
     wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();//初始化默认的WiFi配置
     ESP_ERROR_CHECK(esp_wifi_init(&cfg));//配置WiFi
 
-    uint16_t number = DEFAULT_SCAN_LIST_SIZE;
-    wifi_ap_record_t ap_info[DEFAULT_SCAN_LIST_SIZE];
-    uint16_t ap_count = 0;
-    memset(ap_info, 0, sizeof(ap_info));
+    uint16_t number = DEFAULT_SCAN_LIST_SIZE;//设定最大扫描数量
+    wifi_ap_record_t ap_info[DEFAULT_SCAN_LIST_SIZE];//保存扫描到的WiFi信息
+    uint16_t ap_count = 0;//保存扫描结果的数量
+    memset(ap_info, 0, sizeof(ap_info));//清除WiFi信息结构体
 
-    ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
-    ESP_ERROR_CHECK(esp_wifi_start());
-    ESP_ERROR_CHECK(esp_wifi_scan_start(NULL, true));
-    ESP_ERROR_CHECK(esp_wifi_scan_get_ap_records(&number, ap_info));
-    ESP_ERROR_CHECK(esp_wifi_scan_get_ap_num(&ap_count));
+    ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));//设置为(STA)模式
+    ESP_ERROR_CHECK(esp_wifi_start());//根据当前配置启动WiFi
+    ESP_ERROR_CHECK(esp_wifi_scan_start(NULL, true));//扫描周边可用的WiFi 不使用事件直接等待扫描完成。
+    ESP_ERROR_CHECK(esp_wifi_scan_get_ap_records(&number, ap_info));//获取扫描到的WiFi
+    ESP_ERROR_CHECK(esp_wifi_scan_get_ap_num(&ap_count));//查询扫描到的数量
     ESP_LOGI(TAG, "Total APs scanned = %u", ap_count);
 
     char *string = heap_caps_malloc(256,MALLOC_CAP_DMA);
